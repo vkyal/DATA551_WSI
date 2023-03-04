@@ -17,7 +17,7 @@ import altair as alt
 
 
 
-dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
+dataset = pd.read_csv('data/processed/Sustainability_cleaned.csv',parse_dates=['Year'])
 
 #dataset['Year'] = pd.to_datetime(dataset['Year'], format='%Y').dt.year
 
