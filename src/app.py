@@ -34,6 +34,41 @@ app.layout = dbc.Container([
         }),
     dbc.Tabs([
         # First tab
+        dbc.Tab(label='Environmental', children=[
+            # First row
+            dbc.Row([
+                # First column (slider)
+                dbc.Col([
+                    html.Label('Slider'),
+                    dcc.RangeSlider(
+                        id='slider-env',
+                        min=dataset['Year'].dt.year.min(),
+                        max=dataset['Year'].dt.year.max(),
+                        step=1,
+                        vertical=True,
+                        value=[dataset['Year'].min(),dataset['Year'].dt.year.max()],
+                        marks={str(year): str(year) for year in dataset['Year'].dt.year.unique()},
+                    ),
+                    dcc.Dropdown(
+                        id='dropdown-env',
+                        options=[{'label': i, 'value': i} for i in dataset['Country'].unique()],
+                        value='Finland'
+                    )], 
+                    width=3,md=3),
+                # Second column (chart-1)
+                dbc.Col(
+                    html.Iframe(
+                        id='env-1',
+                        style={'border-width': '0', 'width': '100%', 'height': '400px'})),
+                # Third column (chart-2)
+                dbc.Col(
+                    html.Iframe(
+                        id='env-2',
+                        style={'border-width': '0', 'width': '100%', 'height': '400px'}))
+            ]),
+        ]),# First tab close
+ 
+        # Second tab open
         dbc.Tab(label='Social', children=[
             # First row
             dbc.Row([
@@ -71,9 +106,87 @@ app.layout = dbc.Container([
 ])# Container close
 
 
-# Define the callbacks to update the charts
+# Define the callbacks to update the chart
+
+@app.callback(
+    Output('env-1', 'srcDoc'),
+    Input('slider-env', 'value'),
+    Input('dropdown-env', 'value'))
+def env_1(slider_value, dropdown_value):
+    #min_value = slider_value[0]
+    #max_value = slider_value[1]
+    years_range = range(slider_value[0], slider_value[1] + 1)
+    
+    # Filter the data based on the dropdown values
+    filtered_country = dataset[dataset['Country']== dropdown_value]
 
 
+    # Filter the data based on the slider values
+    #filtered_year = filtered_country[(filtered_country['Year'] >= min_value) & (filtered_country['Year'] <= max_value)]
+    filtered_year = filtered_country[filtered_country['Year'].dt.year.isin(years_range)]
+    
+    # Create chart
+    chart = alt.Chart(filtered_year).mark_circle(opacity=0.7, size=500).encode(
+        alt.X('Internet', title='Access to Internet (% of population)'),
+        alt.Y('Electricity_access', scale=alt.Scale(zero=False), title='Access to electricity (% of population)'),
+        color=alt.Color('Income_classification', title='Income Classification'),
+        tooltip=[alt.Tooltip('Internet', title='Access to Internet(% of population)'), 
+                alt.Tooltip('Electricity_access',title='Access to electricity (% of population)')]).properties(
+        width=500,
+        height=400,
+        title='Access to Utilities, as a percentage of Population'
+    ).interactive()
+
+    return chart.to_html()
+
+@app.callback(
+    Output('env-2', 'srcDoc'),
+    Input('slider-env', 'value'),
+    Input('dropdown-env', 'value'))
+def env_2(slider_value, dropdown_value):
+    #min_value = slider_value[0]
+    #max_value = slider_value[1]
+    years_range = range(slider_value[0], slider_value[1] + 1)
+    
+    # Filter the data based on the dropdown values
+    filtered_country = dataset[dataset['Country']== dropdown_value]
+    
+    # Filter the data based on the slider values
+    filtered_year = filtered_country[filtered_country['Year'].dt.year.isin(years_range)]
+    
+    # create bar chart
+
+    bar_chart = alt.Chart(filtered_year).mark_bar(color='Teal', size=10).encode(
+        alt.X('Year:T',title =''),
+        alt.Y('Co2_prod_tonnes:Q',title='Annual CO2 production (in tonnes)'),
+        tooltip=[alt.Tooltip('Year:T', format='%Y'), alt.Tooltip('Co2_prod_tonnes:Q',title='Annual CO2 production')]
+    )
+
+    # create line chart
+
+
+    line_chart = alt.Chart(filtered_year).mark_line(color='red').encode(
+        alt.X('Year:T', title=''),
+        alt.Y('Adj_savCO2_damage:Q', title='Adjusted Savings : CO2 Damage (% of GNI)'),
+        tooltip=[alt.Tooltip('Year:T', format='%Y'), alt.Tooltip('Adj_savCO2_damage:Q',format='.2f',title='CO2 Damage (% of GNI)')]
+    )
+    
+    # Combine line and bar chart
+    
+    chart = (bar_chart + line_chart).resolve_scale(
+        y='independent'
+    ).properties(
+        width=500,
+        height=400
+    ).configure_axis(
+        grid=False
+    ).configure_view(
+        strokeWidth=0
+    )
+   
+    return chart.to_html()
+
+##### Social Tab #####
 
 @app.callback(
     Output('social-1', 'srcDoc'),
