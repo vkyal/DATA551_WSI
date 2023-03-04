@@ -1,2 +1,2 @@
-web: gunicorn dash_code:server
+web: gunicorn src.app:server
 --timeout $TIMEOUT = 1000
