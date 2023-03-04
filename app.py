@@ -13,9 +13,8 @@ import altair as alt
 from vega_datasets import data
 import pandas as pd
 import altair as alt
-import socket
 
-x = socket.gethostbyname("")
+#x = socket.gethostbyname("")
 
 
 dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
@@ -24,6 +23,7 @@ dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
 
 # Define the app and its layout
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 
 app.layout = dbc.Container([ 
@@ -254,6 +254,6 @@ def soc_2(slider_value, dropdown_value):
 
 
 if __name__ == '__main__':
-    app.run_server(x)                  
+    app.run_server(debug=True)                  
                      
                      
