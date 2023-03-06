@@ -2,11 +2,11 @@
 
 # WorldSustainabilityDashboard
 
-World Sustainability Dashboard is created to track the performance of 173 countries against a range of sustainability metrics over a 19-year period.
+World Sustainability Dashboard is created to track the performance of 173 countries against a range of sustainability metrics over a 19-year period from 2000 to 2018.
 
 ## App Description
 
-The dashboard’s first and main page will be a map of the world that is colored like a heatmap based on the sustainability index. The 1st page will show the sustainability index of all the countries. When hovering over a map it will show the index value of that specific country.
+The dashboard’s main shows world cloropath map based on the sustainability index. It shows sustainability index for all the countries. When hovered over the map it will show the index value of that specific country.
 
 The second page shows two graphs of environmental data. One graph will show what proportion of the population is using the internet, given they have access to electricity. And the other graph will show the proportion of adjusted savings: CO2 damage for given CO2 emission from production annually.
 
