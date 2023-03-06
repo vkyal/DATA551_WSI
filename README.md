@@ -1,5 +1,7 @@
 # DATA551_WSI
 
+**Link to Heroku app -** https://data551-app-v1.herokuapp.com/
+
 # WorldSustainabilityDashboard
 
 World Sustainability Dashboard is created to track the performance of 173 countries against a range of sustainability metrics over a 19-year period from 2000 to 2018.
