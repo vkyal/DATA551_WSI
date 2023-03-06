@@ -15,7 +15,7 @@ import pandas as pd
 import altair as alt
 import socket
 
-x = socket.gethostbyname("")
+#x = socket.gethostbyname("")
 
 
 dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
@@ -24,6 +24,9 @@ dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
 
 # Define the app and its layout
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+#Adding server variable
+server = app.server
 
 #-------------------------------------------------
 # World Map code
@@ -494,6 +497,4 @@ def summ_2(year_value, income_value):
 
 
 if __name__ == '__main__':
-    app.run_server(x)                  
-                     
-                     
+    app.run_server(debug=True)                                                    
