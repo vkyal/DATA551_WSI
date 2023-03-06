@@ -15,24 +15,21 @@ import pandas as pd
 import altair as alt
 import socket
 
-#x = socket.gethostbyname("")
+x = socket.gethostbyname("")
 
 
-dataset = pd.read_csv('Sustainability_cleaned.csv',parse_dates=['Year'])
+dataset = pd.read_csv('../data/processed/Sustainability_cleaned.csv',parse_dates=['Year'])
 
 #dataset['Year'] = pd.to_datetime(dataset['Year'], format='%Y').dt.year
 
 # Define the app and its layout
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-#Adding server variable
-server = app.server
-
 #-------------------------------------------------
 # World Map code
 
 # Load data from CSV
-df = pd.read_excel("Sustainability.xlsx")
+df = pd.read_excel("../data/processed/Sustainability.xlsx")
 
 # Create the base map chart
 base_map = alt.Chart(alt.topo_feature('https://vega.github.io/vega-datasets/data/world-110m.json', 'countries')).mark_geoshape(
@@ -497,4 +494,6 @@ def summ_2(year_value, income_value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)                                                    
+    app.run_server(x)                  
+                     
+                     
