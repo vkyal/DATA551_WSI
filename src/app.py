@@ -5,25 +5,20 @@
 
 
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import altair as alt
-from vega_datasets import data
 import pandas as pd
-import altair as alt
-import socket
-
-x = socket.gethostbyname("")
 
 
 dataset = pd.read_csv('../data/processed/Sustainability_cleaned.csv',parse_dates=['Year'])
 
-#dataset['Year'] = pd.to_datetime(dataset['Year'], format='%Y').dt.year
-
 # Define the app and its layout
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, title='World Sustainability Index', external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+server = app.server
 
 #-------------------------------------------------
 # World Map code
@@ -36,8 +31,8 @@ base_map = alt.Chart(alt.topo_feature('https://vega.github.io/vega-datasets/data
     stroke='white',
     strokeWidth=0.5
 ).properties(
-    width=700,
-    height=400
+    width=1100,
+    height=450
 )
 
 # Create the choropleth map chart
@@ -67,15 +62,15 @@ world_plot_1 = html.Div([
     html.Iframe(
         id="world_plot_id_1",
         srcDoc=world_chart(),
-            style={'border-width': '0', 'width': '100%', 'height': '400px'}
+            style={'border-width': '0', 'width': '100%', 'height': '500px'}
     )
 ])
 
-row1_col1_world = dbc.Row(html.Div("World Sustainability Index - 2018", style = {"font-weight": "bolder", 'text-align': "left"}))
+row1_col1_world = dbc.Row(html.Div("World Sustainability Index Map - 2018", style = {"font-weight": "bolder", 'text-align': "left"}))
 
 row1_world = html.Div([dbc.Row(
     [
-        dbc.Col(row1_col1_world, md=6)
+        dbc.Col(row1_col1_world)
     ]
     )]
 )
@@ -100,8 +95,7 @@ col3_world = html.Div(
     
 main_row_world = html.Div([
     dbc.Row([
-        #dbc.Col(col1_shveta, md=1),    # slider column
-        dbc.Col(col3_world, md=8),    # Cards column
+        dbc.Col(col3_world),    # Cards column
     ])
 ],
 style={'padding-top': "30px"})
@@ -127,24 +121,21 @@ app.layout = dbc.Container([
             # First row
             dbc.Row([
                 # First column (slider)
-                dbc.Col([
-                    html.Label('Slider'),
+                html.Label('Please select the year range slider', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.RangeSlider(
                         id='slider-env',
                         min=dataset['Year'].dt.year.min(),
                         max=dataset['Year'].dt.year.max(),
                         step=1,
-                        vertical=True,
                         value=[2000,2018],
                         marks={str(year): str(year) for year in dataset['Year'].dt.year.unique()},
                     ),
+                    html.Label('Please select the country', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.Dropdown(
                         id='dropdown-env',
                         options=[{'label': i, 'value': i} for i in dataset['Country'].unique()],
                         value='Finland'
-                    )], 
-                    width=3,md=3),
-                # Second column (chart-1)
+                    ),
                 dbc.Col(
                     html.Iframe(
                         id='env-1',
@@ -154,31 +145,28 @@ app.layout = dbc.Container([
                     html.Iframe(
                         id='env-2',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'}))
-            ]),
-        ]),# First tab close
- 
+            ])
+        ]),
         # Second tab open
         dbc.Tab(label='Social', children=[
             # First row
             dbc.Row([
                 # First column (slider)
-                dbc.Col([
-                    html.Label('Slider'),
+                html.Label('Please select the year range slider', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.RangeSlider(
                         id='slider-soc',
                         min=dataset['Year'].dt.year.min(),
                         max=dataset['Year'].dt.year.max(),
                         step=1,
-                        vertical=True,
                         value=[2000,2018],
                         marks={str(year): str(year) for year in dataset['Year'].dt.year.unique()},
                     ),
+                    html.Label('Please select the country', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.Dropdown(
                         id='dropdown-soc',
                         options=[{'label': i, 'value': i} for i in dataset['Country'].unique()],
                         value='Finland'
-                    )], 
-                    width=3,md=3),
+                    ),
                 # Second column (chart-1)
                 dbc.Col(
                     html.Iframe(
@@ -190,60 +178,53 @@ app.layout = dbc.Container([
                         id='social-2',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'}))
             ]),
-        ]),# Second tab close
-        
-         
+        ]),# Second tab close 
         # Third tab open
         dbc.Tab(label='Economic', children=[
             # First row
             dbc.Row([
                 # First column (slider)
-                dbc.Col([
-                    html.Label('Slider'),
+                    html.Label('Please select the year range slider', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.RangeSlider(
                         id='slider-eco',
                         min=dataset['Year'].dt.year.min(),
                         max=dataset['Year'].dt.year.max(),
                         step=1,
-                        vertical=True,
                         value=[2000,2018],
                         marks={str(year): str(year) for year in dataset['Year'].dt.year.unique()},
                     ),
+                    html.Label('Please select the country', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.Dropdown(
                         id='dropdown-eco',
                         options=[{'label': i, 'value': i} for i in dataset['Country'].unique()],
-                        value='Finland'
-                    )], 
-                    width=3,md=3),
+                        value='Finland'),
+
                 # Second column (chart-1)
                 dbc.Col(
                     html.Iframe(
                         id='eco-1',
-                        style={'border-width': '0', 'width': '100%', 'height': '400px'}))
+                        style={'border-width': '0', 'width': '100%', 'height': '450px'}))
             ]),
-        ]),# Third tab close
-        
+        ]),
+
         # Fourth tab open
         dbc.Tab(label='Summary', children=[
             # First row
             dbc.Row([
                 # First column (slider)
-                dbc.Col([
-                    html.Label('Select a year'),
+                html.Label('Please select the year', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.Dropdown(
                         id='year-summ',
                         options=[{'label': i, 'value': i} for i in dataset['Year'].dt.year.unique()],
                         value= 2018
                     ),
-                    html.Br(),
-                    html.Label('Select an Income Group'),
+                    html.Label('Please select the income classification group', style = {"font-weight": "bolder", 'text-align': "left"}),
                     dcc.Dropdown(
                         id='income-summ',
                         options=[{'label': i, 'value': i} for i in dataset['Income_classification'].unique()],
                         value = ['High income','Low income','Upper-middle income','Lower-middle income'],
-                        multi = 'True'
-                    )], 
-                    width=3,md=3),
+                        multi = True
+                    ),
                 # Second column (chart-1)
                 dbc.Col(
                     html.Iframe(
@@ -262,8 +243,6 @@ app.layout = dbc.Container([
 
 
 # Define the callbacks to update the chart
-
-
 
 
 @app.callback(
@@ -290,8 +269,8 @@ def env_1(slider_value, dropdown_value):
         color=alt.Color('Income_classification', title='Income Classification'),
         tooltip=[alt.Tooltip('Internet', title='Access to Internet(% of population)'), 
                 alt.Tooltip('Electricity_access',title='Access to electricity (% of population)')]).properties(
-        width=500,
-        height=400,
+        width=350,
+        height=315,
         title='Access to Utilities, as a percentage of Population'
     )
 
@@ -318,7 +297,7 @@ def env_2(slider_value, dropdown_value):
         alt.X('Year:T',title =''),
         alt.Y('Co2_prod_tonnes:Q',title='Annual CO2 production (in tonnes)'),
         tooltip=[alt.Tooltip('Year:T', format='%Y'), alt.Tooltip('Co2_prod_tonnes:Q',title='Annual CO2 production')]
-    )
+    ).properties(title = "Annual CO2 production & Adjusted savings over years")
 
     # create line chart
 
@@ -334,8 +313,8 @@ def env_2(slider_value, dropdown_value):
     chart = (bar_chart + line_chart).resolve_scale(
         y='independent'
     ).properties(
-        width=500,
-        height=400
+        width=350,
+        height=315
     ).configure_axis(
         grid=False
     ).configure_view(
@@ -439,7 +418,7 @@ def soc_2(slider_value, dropdown_value):
         tooltip=[alt.Tooltip('GDP_per_capita:Q', title='GDP per capita'),alt.Tooltip('imp_exp:N', title='Trade type')]
     ).facet(
         column=alt.Column('Year:N', title=None)
-    ).properties(
+    ).properties(#width=50, height=50,
         title=alt.TitleParams(
             "Import and Export as % of GDP per Capita",
             anchor='middle',
@@ -447,7 +426,6 @@ def soc_2(slider_value, dropdown_value):
         )
     )      
     return chart.to_html()
-
 
 @app.callback(
     Output('summ-1', 'srcDoc'),
@@ -462,12 +440,12 @@ def summ_1(year_value, income_value):
     # Create chart  
     
     chart = alt.Chart(filtered_data).mark_circle(opacity=0.5, size=100).encode(
-    alt.X('GDP_per_capita:Q'),
-    alt.Y('Inflation:Q'),
+    alt.X('GDP_per_capita:Q', title="GDP per capita (in USD)"),
+    alt.Y('Inflation:Q', title = "Inflation (in %)"),
     alt.Size('Population:Q', scale=alt.Scale(range=[10, 2000]), legend=None),
     alt.Color('Country:N',legend = None),
     alt.Tooltip(['Country', 'Inflation'])
-).properties(height=300, width=400)
+).properties(height=300, width=400, title = "Relationship between Inflation, GDP per Capita, and Population")
     
     return chart.to_html()
 
@@ -485,15 +463,12 @@ def summ_2(year_value, income_value):
     
     chart = alt.Chart(filtered_data).mark_arc(outerRadius=80).encode(
     theta=alt.Theta('count():Q'),
-    color=alt.Color('Income_classification:N'),
-    tooltip=["Income_classification", "count()"])
+    color=alt.Color('Income_classification:N', title="Income classification"),
+    tooltip=["Income_classification", "count()"]).properties(
+        title = "Distribution of income group classification"
+    )
     
     return chart.to_html()
 
-
-
-
 if __name__ == '__main__':
-    app.run_server(x)                  
-                     
-                     
+    app.run_server(debug=False)
