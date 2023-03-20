@@ -12,9 +12,9 @@ Environmental Tab: The second tab is showing two graphs of environmental data. O
 
 Social Tab: The third tab is showing social graphs. First graph is showing the literacy level of the selected country for the selected period. The second graph is showing the disparity between the employment of males and females for the selected country, year, and period.
 
-Economic: The fourth tab is showing barplots of the Trade % of GPD per capita from 2000 to 2018 for the required country. It has legends for Imports and Exports.
+Economic Tab: The fourth tab is showing barplots of the Trade % of GPD per capita from 2000 to 2018 for the required country. It has legends for Imports and Exports.
 
-Summary: The fifth tab is showing two graphs, one bubble chart for the inflation v/s GDP and other is how income classification is divided for the given country. The second is the pie chart showing the proportion of countries according to the income classification for a particular year. In this tab Income classification is multi-select whereas year is dropdown.
+Summary Tab: The fifth tab is showing two graphs, one bubble chart for the inflation v/s GDP and other is how income classification is divided for the given country. The second is the pie chart showing the proportion of countries according to the income classification for a particular year. In this tab Income classification is multi-select whereas year is dropdown.
 
 #### Development and bug for milestone 4
 
