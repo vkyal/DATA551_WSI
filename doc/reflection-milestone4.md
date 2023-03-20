@@ -23,13 +23,13 @@ While we were putting together the dashboard for the milestone 4, we faced the f
 1. Had difficulty to format layouts as per the initial planning but with few attempts we achieved what we wanted.
 
 
-### Suggestion from TA from Milestone 1,2 & 3
+#### Suggestion from TA from Milestone 1,2 & 3
 
 1. For Environmental and Social tab we have implemented the graph side by side and moved the drop-down options at the top.
 2. The graph size is increased as suggested in previous milestone along with width and height.
 3. We have concentrated more on beautifying the dash to resolve the scaling issues and other styling effects.
 
-### Thoughts on the feedback from TA and peers.
+#### Thoughts on the feedback from TA and peers.
 
 Following are the thoughts on the feedback to make dashboard more user-friendly and effective:
 
